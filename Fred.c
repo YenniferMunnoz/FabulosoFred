@@ -38,10 +38,10 @@ void GameOver()
 void GeneradorNumerosRandom()
 {
      unsigned short seed=0;
-     //seed = EEPROM_read(EEPROM_SEED_ADRESS);
+     seed = EEPROM_read(EEPROM_SEED_ADRESS);
      srand(seed);
      seed++;
-     //EEPROM_write(EEPROM_SEED_ADRESS,seed);
+     EEPROM_write(EEPROM_SEED_ADRESS,seed);
 }
  
 // Reinicia el juego (se llama una vez cuando se enciende el pic o cuando el jugador se equivoca)
@@ -141,8 +141,8 @@ void PresionadoDeBotones(char a, char b, char c, char d)
 void CargarConfiguracion()
 {
      unsigned short SoundEnabled = 0;
-     //SoundInit = EEPROM_read(EEPROM_SOUND_EBABLE_ADRESS);
-     //SoundInit = EEPROM_SOUND_EBABLE_ADRESS;
+     EEPROM_read(EEPROM_SOUND_EBABLE_ADRESS);
+     EEPROM_SOUND_EBABLE_ADRESS;
      estaSonidoActivo = SoundEnabled;
 }
  
@@ -151,17 +151,14 @@ void main(void) {
      bit pa,pb,pc,pd;   // Estado actual de los pulsadores
      bit oa,ob,oc,od;   // Estado anterior de los pulsadores
 	 
-	 // Inicialización
+	 // Inicializacion
      oa=ob=oc=od=0;
      pa=pb=pc=pd=0;
- 
      TRISD = 0x0F; 		// Entradas (pulsadores): RD0 - RD3. Salidas (LEDs): RD4 - RD7
-     PORTD = 0x00;		// Se inicializa todo en estado bajo, es decir, apagado.
-     
+     PORTD = 0x00;		// Se inicializa todo en estado bajo, es decir, apagado.  
      CargarConfiguracion();
      
-     //Sound_init(&PORTB,0);
-     _Reset();     		// Llama a la función _Reset() una vez antes de iniciar para realizar configuraciones adicionales.
+     _Reset();     		// Llama a la funcion _Reset() una vez antes de iniciar para realizar configuraciones adicionales.
      
      while(1)			// Ciclo infinito. Implementacionn de la maquina de estados.
      {
@@ -176,8 +173,7 @@ void main(void) {
              {
                      oa = 0;
                      pa = 0;
-             }
-             
+             }             
              // Pulsador 2
              if(LATBbits(&PORTD,1,1,0) && !ob)
              {
@@ -188,8 +184,7 @@ void main(void) {
              {
                      ob = 0;
                      pb = 0;
-             }
-             
+             }         
              // Pulsador 3
              if(LATBbits(&PORTD,2,1,0) && !oc)
              {
@@ -200,8 +195,7 @@ void main(void) {
              {
                      oc = 0;
                      pc = 0;
-             }
-             
+             }  
              // Pulsador 4
              if(LATBbits(&PORTD,3,1,0) && !od)
              {
